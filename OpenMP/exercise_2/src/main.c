@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 {
 	int opt;
 	int debug = 0;
-	int repeat = 1;
+	int repeat = 50;
 	int num_threads = omp_get_max_threads();
 
 	double omp_sum_val, omp_atomic_sum_val, omp_critical_sum_val, omp_local_sum_val, omp_padded_sum_val, omp_optimized_sum_val;
