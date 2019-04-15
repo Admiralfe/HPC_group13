@@ -80,9 +80,10 @@ int main(int argc, char *argv[])
 	nbody(bodies, steps, output_steps, N, G, DT, EPS);
 	stop = omp_get_wtime();
 	printf("Total runtime: %f\n", stop - start);
-
+	FILE* rt_file = fopen("runtimes.txt", "a");
+	fprintf(rt_file, "%f,", stop - start);
+	fclose(rt_file);
 	return 0;
-}
 
 void print_usage(const char *name)
 {

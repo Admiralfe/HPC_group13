@@ -16,7 +16,7 @@ void nbody(struct Body *bodies, int steps, int output_steps, int N, double G, do
 		}
 
 		t1 = omp_get_wtime();
-		#pragma omp for
+		#pragma omp for schedule(static)
 		for (int j = 0; j < N; j++) {
 			double fx = 0.0;
 			double fy = 0.0;
@@ -60,7 +60,7 @@ void nbody(struct Body *bodies, int steps, int output_steps, int N, double G, do
 			bodies[j].position[2] += bodies[j].velocity[2] * DT;
 		}
 
-		#pragma omp for
+		#pragma omp for schedule(static)
 		for (int j = 0; j < N; j++) {
 			bodies[j].old_position[0] = bodies[j].position[0];
 			bodies[j].old_position[1] = bodies[j].position[1];
@@ -77,8 +77,8 @@ void nbody(struct Body *bodies, int steps, int output_steps, int N, double G, do
 			fclose(checkpoint);
 			checkpoint = NULL;
 		}
-
-		printf("step = %d, runtime: %f\n", i, t2 - t1);
+		
+		//printf("step = %d, runtime: %f\n", i, t2 - t1);
 		#pragma omp barrier
 	}
 }
