@@ -1,4 +1,4 @@
-CC = mpicc
+CC = cc
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:.c=.o)
 BIN = ./bin
