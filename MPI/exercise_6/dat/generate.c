@@ -5,7 +5,7 @@
 int main(int argc, char *argv[])
 {
 	if (argc < 6) {
-		printf("Usage: %s [M] [K] [N] [output A] [output B] [output Answer] [seed]\n");
+		printf("Usage: [M] [K] [N] [output A] [output B] [output Answer] [seed]\n");
 		exit(1);
 	}
 
@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
 
 	for (int i = 0; i < A_dims[0] * A_dims[1]; i++) {
 		A[i] = (double)rand() / (double)RAND_MAX;
+		printf("index: %d, value: %f\n", i, A[i]);
 	}
 	for (int i = 0; i < B_dims[0] * B_dims[1]; i++) {
 		B[i] = (double)rand() / (double)RAND_MAX;

@@ -30,9 +30,7 @@ void compute_pi(int flip, int *local_count, double *answer)
 	
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &num_ranks);
-	
-	int local_iters = NUM_ITER / num_ranks;
-	
+		
     double x, y, z, pi;
     
     srand(SEED * rank); // Important: Multiply SEED by "rank" when you introduce MPI!

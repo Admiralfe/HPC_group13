@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 int main(int argc, char *argv[])
 {
@@ -24,7 +25,7 @@ int main(int argc, char *argv[])
 	fread(ans_dims, sizeof(int), 2, file);
 	fread(C_ans, sizeof(double), dims[0] * dims[1], file);
 
-#pragma omp parallel for
+
 	for (int i = 0; i < ans_dims[0] * ans_dims[1]; i++) {
 		if (fabs(C[i] - C_ans[i]) > 1E-8) {
 			printf("Error %f %f\n", C[i], C_ans[i]);

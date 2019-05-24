@@ -9,7 +9,6 @@
 #include <assert.h>
 
 #include <mpi.h>
-#include <cblas.h>
 
 void init_matmul(char*, char*, char*);
 void cleanup_matmul();
