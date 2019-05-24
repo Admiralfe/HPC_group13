@@ -1,8 +1,5 @@
 #include "pi.h"
 
-#define SEED 921
-#define NUM_ITER 1000000000
-
 void init_pi(int set_seed, char *outfile)
 {
 	if (filename != NULL) {
@@ -31,24 +28,22 @@ void compute_pi(int flip, int *local_count, double *answer)
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &num_ranks);
 		
-    double x, y, z, pi;
+	double x, y, z, pi;
     
-    srand(SEED * rank); // Important: Multiply SEED by "rank" when you introduce MPI!
+	srand(SEED * rank); // Important: Multiply SEED by "rank" when you introduce MPI!
     
-    // Calculate PI following a Monte Carlo method
-    for (int iter = 0; iter < local_iters; iter++)
-    {
-        // Generate random (X,Y) points
-        x = (double)random() / (double)RAND_MAX;
-        y = (double)random() / (double)RAND_MAX;
-        z = sqrt((x*x) + (y*y));
+	// Calculate PI following a Monte Carlo method
+	for (int iter = 0; iter < local_iters; iter++)
+	{
+		// Generate random (X,Y) points
+		x = (double)random() / (double)RAND_MAX;
+		y = (double)random() / (double)RAND_MAX;
+		z = sqrt((x*x) + (y*y));
         
-        // Check if point is in unit circle
-        if (z <= 1.0)
-        {
-            (*local_count)++;
-        }
-    }
+		// Check if point is in unit circle
+		if (z <= 1.0)
+			(*local_count)++;
+	}
     
 	if (rank == 0) 
 	{
@@ -74,6 +69,5 @@ void compute_pi(int flip, int *local_count, double *answer)
 	{
 		MPI_Send(local_count, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);	
 	}
-	
 	return;
 }
