@@ -1,11 +1,11 @@
-CC = mpicc
+CC = cc
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:.c=.o)
 BIN = ./bin
 TARGET = matmul.out
 
 LDFLAGS = -lm
-CFLAGS = -I ./include -g -Wall -O3
+CFLAGS = -I ./include -g -Wall -O3 -std=c99
 
 all: dir $(BIN)/$(TARGET)
 

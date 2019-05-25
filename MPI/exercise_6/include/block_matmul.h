@@ -7,7 +7,7 @@
 #include <time.h>
 #include <string.h>
 #include <assert.h>
-
+#include <getopt.h>
 #include <mpi.h>
 
 void init_matmul(char*, char*, char*);

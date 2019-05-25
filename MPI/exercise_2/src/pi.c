@@ -29,41 +29,39 @@ void compute_pi(int flip, int *local_count, double *answer)
 	
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &num_ranks);
-	
-    double x, y, z, pi;
-    
-    srand(SEED * rank); // Important: Multiply SEED by "rank" when you introduce MPI!
-    int iter, i;
-    // Calculate PI following a Monte Carlo method
-    for (iter = 0; iter < flip; iter++)
-    {
-        // Generate random (X,Y) points
-        x = (double)random() / (double)RAND_MAX;
-        y = (double)random() / (double)RAND_MAX;
-        z = sqrt((x*x) + (y*y));
-        
-        // Check if point is in unit circle
-        if (z <= 1.0)
-        {
-            (*local_count)++;
-        }
-    }
+
+	double x, y, z, pi;
+
+	srand(SEED * rank); // Important: Multiply SEED by "rank" when you introduce MPI!
+	int iter, i;
+	// Calculate PI following a Monte Carlo method
+	for (iter = 0; iter < flip; iter++)
+	{
+		// Generate random (X,Y) points
+		x = (double)random() / (double)RAND_MAX;
+		y = (double)random() / (double)RAND_MAX;
+		z = sqrt((x*x) + (y*y));
+
+        	// Check if point is in unit circle
+        	if (z <= 1.0)
+			(*local_count)++;
+	}
     
 	if (rank == 0) 
 	{
 		int counts[num_ranks - 1];
 		MPI_Request requests[num_ranks - 1];
 		int count = 0;
-		
+
 		for (i = 1; i < num_ranks; i++)
 		{
 			MPI_Irecv(&counts[i - 1], 1, MPI_INT, i, 0, MPI_COMM_WORLD, &requests[i - 1]);
 		}
 		MPI_Waitall(num_ranks - 1, requests, MPI_STATUSES_IGNORE);
-		
+
+		count += *local_count;
 		for (i = 0; i < num_ranks - 1; i++) 
 		{
-			printf("%d\n", counts[i]);
 			count += counts[i];
 		}
 		// Estimate Pi and display the result
