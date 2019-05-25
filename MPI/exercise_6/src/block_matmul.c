@@ -149,6 +149,7 @@ void compute_fox()
 	int bcast_root_rank; //Rank of the broadcasting process in the row communicators
 	MPI_Cart_shift(config.col_comm, 0, -1, &source, &target);
 	config.A_tmp = (double*) malloc(config.matrix_size * sizeof(double));
+	memset(config.C, 0, config.local_size * sizeof(double));
 	for (int i = 0; i < config.dim[0]; i++) {
 		/* Diag + i broadcast block A horizontally and use A_tmp to preserve own local A */
 		bcast_root_rank = (config.col_rank + i) % config.dim[0]; //Diagonal has rank same as column rank of current row.
