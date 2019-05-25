@@ -62,7 +62,6 @@ void init_matmul(char *A_file, char *B_file, char *outfile)
 	MPI_Bcast(&config.A_dims, 2, MPI_INT, 0, MPI_COMM_WORLD);
 	MPI_Bcast(&config.B_dims, 2, MPI_INT, 0, MPI_COMM_WORLD);
 
-	printf("dimension 0: %d, dimension 1: %d\n", config.A_dims[0], config.A_dims[1]);
 	/* Set dim of tiles relative to the number of processes as NxN where N=sqrt(world_size) */
 	config.dim[0] = (int) sqrt(config.world_size);
 	config.dim[1] = (int) sqrt(config.world_size);
@@ -89,7 +88,7 @@ void init_matmul(char *A_file, char *B_file, char *outfile)
 	MPI_Comm_size(config.row_comm, &config.row_size);
 
 	/* Sub div cart communicator to N col communicator */
-	keep_dims[0] = 1; //Keep the row dimension to create a column communicator
+	keep_dims[0] = 1;
 	keep_dims[1] = 0;
 	MPI_Cart_sub(config.grid_comm, keep_dims, &config.col_comm);
 	MPI_Comm_rank(config.col_comm, &config.col_rank);
@@ -115,15 +114,11 @@ void init_matmul(char *A_file, char *B_file, char *outfile)
 	MPI_Offset header_displacement = 2 * sizeof(int);
 	MPI_File_set_view(config.A_file, header_displacement, MPI_DOUBLE, config.block, "native", MPI_INFO_NULL);
 	MPI_File_set_view(config.B_file, header_displacement, MPI_DOUBLE, config.block, "native", MPI_INFO_NULL);
+
 	/* Collective read blocks from files */
 	MPI_File_read_all(config.A_file, config.A, config.local_size, MPI_DOUBLE, MPI_STATUS_IGNORE);
 	MPI_File_read_all(config.B_file, config.B, config.local_size, MPI_DOUBLE, MPI_STATUS_IGNORE);
 	
-	if (config.world_rank == 2) {
-                for (int i = 0; i < config.local_size; i++)
-                        printf("index: %d, value: %f\n", i, config.A[i]);
-		printf("printed all\n");
-        }
 	/* Close data source files */
 	MPI_File_close(&config.A_file);
 	MPI_File_close(&config.B_file);

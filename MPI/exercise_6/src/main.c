@@ -11,7 +11,6 @@ void print_usage();
 
 int main(int argc, char *argv[])
 {
-	printf("hi\n");
 	int opt;
 	int world_rank;
 	int repeat = 1;
