@@ -23,7 +23,7 @@ void cleanup_pi()
 }
 
 void compute_pi(int flip, int *local_count, double *answer)
-{
+
 	int rank, num_ranks, i;
 	
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
