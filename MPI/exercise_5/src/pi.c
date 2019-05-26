@@ -56,7 +56,7 @@ void compute_pi(int flip, int *local_count, double *answer)
 	int written_chars = 
 		snprintf(out_str, out_str_buffer_len, "%d %.6f", rank, *local_count / (double) flip);
 	out_str[written_chars] = 32; //Remove the null terminator since we will write to file as binary
-	out_str[out_str_buffer_len - 1] = 10; //Manually add new line character.
+	out_str[out_str_buffer_len - 1] = 10; //Manually add new line character. (ASCII 10)
 
 	//Write to the output file
 	MPI_File fh;
@@ -70,6 +70,10 @@ void compute_pi(int flip, int *local_count, double *answer)
         {
                 pi = ((double) count / (double) (flip * num_ranks)) * 4.0;
                 *answer = pi;
+		written_chars = snprintf(out_str, out_str_buffer_len, "pi = %.6f", pi);
+		out_str[written_chars] = 32; //remove the null terminator since we are writing in binary.
+		out_str[out_str_buffer_len - 1] = 10; //Manually add new line character (ASCII 10)
+		MPI_File_write_at(fh, out_str_buffer_len * num_ranks, out_str, out_str_buffer_len, MPI_CHAR, MPI_STATUS_IGNORE);
         }
         return;
 }
